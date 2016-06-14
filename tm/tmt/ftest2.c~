@@ -1,0 +1,21 @@
+
+
+void lala(char a[]){
+
+}
+
+char buf1[256];
+
+void main(void){
+char buf2[256];
+int fd;
+
+buf1[17]=18;
+
+
+buf2[27]=28;
+
+lala(buf1);
+lala(buf2);
+
+}

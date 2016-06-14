@@ -1,0 +1,19 @@
+
+#ifndef TMLIBINCLUDE_H
+#define TMLIBINCLUDE_H
+
+
+#define LIBPTBL_SIZE 2048
+#define LIBDADDR_SIZE 16384
+#define LIBSADDR_SIZE 1024
+#define LIBTBUF_SIZE 1024
+#define MAXSTR 256
+#define LIBFDT_SIZE 256
+#define REGI_RETURN 27
+
+void lib_init(void);
+int libcall_handle(char *libname,int prm1,int prm2);
+
+
+
+#endif //TMLIBINCUDE_H

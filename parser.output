@@ -1,0 +1,4150 @@
+Terminals unused in grammar
+
+   CONST
+   UNDEFINED
+
+
+State 247 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 $@1: %empty
+
+    2 program: $@1 var_declaration_list fun_declaration_list
+
+    3 var_declaration_list: var_declaration_list var_declaration
+    4                     | empty
+
+    5 fun_declaration_list: fun_declaration_list fun_declaration
+    6                     | fun_declaration
+
+    7 var_declaration: type_specifier var SEMICOLON
+    8                | type_specifier var LBRACKET num RBRACKET SEMICOLON
+    9                | type_specifier SEMICOLON
+
+   10 type_specifier: optional_type type MULTIPLY
+   11               | optional_type type
+   12               | type MULTIPLY
+   13               | type
+
+   14 optional_type: STATIC
+   15              | EXTERN
+
+   16 type: INT
+   17     | CHAR
+   18     | VOID
+   19     | struct_type
+
+   20 $@2: %empty
+
+   21 struct_type: STRUCT var $@2 LBRACE member_declaration_list RBRACE
+   22            | STRUCT var
+
+   23 member_declaration_list: member_declaration_list member_declaration
+   24                        | member_declaration
+
+   25 member_declaration: type_specifier var SEMICOLON
+   26                   | type_specifier var LBRACKET num RBRACKET SEMICOLON
+
+   27 var: ID
+
+   28 num: NUM
+   29    | OCTNUM
+   30    | HEXNUM
+   31    | CHARCONST
+
+   32 $@3: %empty
+
+   33 $@4: %empty
+
+   34 $@5: %empty
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+   36 params: param_list
+   37       | VOID
+
+   38 param_list: param_list COMMA param
+   39           | param
+
+   40 param: type_specifier var
+   41      | type_specifier var LBRACKET RBRACKET
+
+   42 local_declarations: local_declarations var_declaration
+   43                   | empty
+
+   44 statement_list: statement_list statement
+   45               | empty
+
+   46 statement: compound_stmt
+   47          | expression_stmt
+   48          | selection_stmt
+   49          | case_stmt
+   50          | iteration_stmt
+   51          | clear_stmt
+   52          | sleep_stmt
+   53          | funcall_stmt
+   54          | return_stmt
+   55          | input_stmt
+   56          | output_stmt
+
+   57 compound_stmt: LBRACE statement_list RBRACE
+
+   58 expression_stmt: expression SEMICOLON
+   59                | SEMICOLON
+
+   60 expression: unary_expression_assign expression
+   61           | logical_expression
+   62           | libcall_exp
+   63           | libfrd_exp
+   64           | libfwt_exp
+
+   65 libfrd_exp: LIBFRD LPAR expression COMMA expression COMMA expression RPAR
+
+   66 libfwt_exp: LIBFWT LPAR expression COMMA expression COMMA expression RPAR
+
+   67 libcall_exp: LIBCALL LPAR expression COMMA expression COMMA expression RPAR
+
+   68 unary_expression_assign: unary_expression ASSIGN
+
+   69 logical_expression: logical_expression logop relational_expression
+   70                   | relational_expression
+
+   71 logop: DOUBLEOR
+   72      | DOUBLEAND
+
+   73 relational_expression: additive_expression relop additive_expression
+   74                      | additive_expression
+
+   75 relop: LT
+   76      | LE
+   77      | GT
+   78      | GE
+   79      | EQ
+   80      | NE
+
+   81 additive_expression: additive_expression addop term
+   82                    | term
+
+   83 addop: PLUS
+   84      | MINUS
+
+   85 term: term mulop unary_expression
+   86     | unary_expression
+
+   87 mulop: MULTIPLY
+   88      | DIVIDE
+   89      | PERCENT
+
+   90 unary_expression: unaop member_expression
+   91                 | member_expression
+
+   92 unaop: EXCLAMATION
+   93      | AMPERSAND
+   94      | MULTIPLY
+
+   95 member_expression: member_expression memop var
+   96                  | member_expression memop var LBRACKET expression RBRACKET
+   97                  | factor
+
+   98 memop: PERIOD
+   99      | ARROW
+
+  100 factor: LPAR expression RPAR
+  101       | var
+  102       | var LBRACKET expression RBRACKET
+  103       | num
+  104       | PLUS num
+  105       | MINUS num
+  106       | STRINGCONST
+
+  107 $@6: %empty
+
+  108 $@7: %empty
+
+  109 selection_stmt: IF LPAR expression $@6 if_rpar statement $@7 else_stmt
+
+  110 $@8: %empty
+
+  111 selection_stmt: SWITCH LPAR expression RPAR $@8 statement
+
+  112 $@9: %empty
+
+  113 else_stmt: if_else $@9 statement
+  114          | empty
+
+  115 if_rpar: RPAR
+
+  116 if_else: ELSE
+
+  117 $@10: %empty
+
+  118 case_stmt: CASE num COLON $@10 statement
+
+  119 $@11: %empty
+
+  120 $@12: %empty
+
+  121 case_stmt: $@11 DEFAULT COLON $@12 statement
+
+  122 $@13: %empty
+
+  123 iteration_stmt: WHILE while_lpar expression $@13 while_rpar statement
+
+  124 $@14: %empty
+
+  125 iteration_stmt: FOR LPAR expression_stmt expression_stmt $@14 for_stmt
+
+  126 $@15: %empty
+
+  127 for_stmt: expression RPAR $@15 statement
+
+  128 $@16: %empty
+
+  129 for_stmt: RPAR $@16 statement
+
+  130 while_lpar: LPAR
+
+  131 while_rpar: RPAR
+
+  132 clear_stmt: CLEAR
+
+  133 sleep_stmt: SLEEP LPAR num RPAR
+
+  134 funcall_stmt: unary_expression_assign call
+  135             | call
+
+  136 $@17: %empty
+
+  137 call: var $@17 LPAR args RPAR
+
+  138 args: arg_list
+  139     | empty
+
+  140 arg_list: arg_list COMMA expression
+  141         | expression
+
+  142 return_stmt: RETURN SEMICOLON
+  143            | RETURN expression SEMICOLON
+  144            | BREAK SEMICOLON
+
+  145 $@18: %empty
+
+  146 input_stmt: INPUT unary_expression $@18 SEMICOLON
+
+  147 output_stmt: OUTPUT expression SEMICOLON
+  148            | OUTPUTS expression SEMICOLON
+  149            | OUTPUTC expression SEMICOLON
+
+  150 empty: %empty
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+VOID (258) 18 37
+INT (259) 16
+CHAR (260) 17
+STRUCT (261) 21 22
+STATIC (262) 14
+EXTERN (263) 15
+CONST (264)
+IF (265) 109
+ELSE (266) 116
+SWITCH (267) 111
+CASE (268) 118
+DEFAULT (269) 121
+WHILE (270) 123
+FOR (271) 125
+RETURN (272) 142 143
+BREAK (273) 144
+CLEAR (274) 132
+SLEEP (275) 133
+INPUT (276) 146
+OUTPUTS (277) 148
+OUTPUTC (278) 149
+OUTPUT (279) 147
+PLUS (280) 83 104
+MINUS (281) 84 105
+MULTIPLY (282) 10 12 87 94
+DIVIDE (283) 88
+PERCENT (284) 89
+LT (285) 75
+LE (286) 76
+GT (287) 77
+GE (288) 78
+EQ (289) 79
+NE (290) 80
+DOUBLEOR (291) 71
+DOUBLEAND (292) 72
+EXCLAMATION (293) 92
+ASSIGN (294) 68
+PERIOD (295) 98
+ARROW (296) 99
+AMPERSAND (297) 93
+COMMA (298) 38 65 66 67 140
+SEMICOLON (299) 7 8 9 25 26 58 59 142 143 144 146 147 148 149
+COLON (300) 118 121
+LPAR (301) 35 65 66 67 100 109 111 125 130 133 137
+RPAR (302) 35 65 66 67 100 111 115 127 129 131 133 137
+LBRACE (303) 21 35 57
+RBRACE (304) 21 35 57
+LBRACKET (305) 8 26 41 96 102
+RBRACKET (306) 8 26 41 96 102
+ID (307) 27
+OCTNUM (308) 29
+HEXNUM (309) 30
+NUM (310) 28
+CHARCONST (311) 31
+STRINGCONST (312) 106
+UNDEFINED (313)
+LIBCALL (314) 67
+LIBFRD (315) 65
+LIBFWT (316) 66
+
+
+Nonterminals, with rules where they appear
+
+$accept (62)
+    on left: 0
+program (63)
+    on left: 2, on right: 0
+$@1 (64)
+    on left: 1, on right: 2
+var_declaration_list (65)
+    on left: 3 4, on right: 2 3
+fun_declaration_list (66)
+    on left: 5 6, on right: 2 5
+var_declaration (67)
+    on left: 7 8 9, on right: 3 42
+type_specifier (68)
+    on left: 10 11 12 13, on right: 7 8 9 25 26 35 40 41
+optional_type (69)
+    on left: 14 15, on right: 10 11
+type (70)
+    on left: 16 17 18 19, on right: 10 11 12 13
+struct_type (71)
+    on left: 21 22, on right: 19
+$@2 (72)
+    on left: 20, on right: 21
+member_declaration_list (73)
+    on left: 23 24, on right: 21 23
+member_declaration (74)
+    on left: 25 26, on right: 23 24
+var (75)
+    on left: 27, on right: 7 8 21 22 25 26 35 40 41 95 96 101 102 137
+num (76)
+    on left: 28 29 30 31, on right: 8 26 103 104 105 118 133
+fun_declaration (77)
+    on left: 35, on right: 5 6
+$@3 (78)
+    on left: 32, on right: 35
+$@4 (79)
+    on left: 33, on right: 35
+$@5 (80)
+    on left: 34, on right: 35
+params (81)
+    on left: 36 37, on right: 35
+param_list (82)
+    on left: 38 39, on right: 36 38
+param (83)
+    on left: 40 41, on right: 38 39
+local_declarations (84)
+    on left: 42 43, on right: 35 42
+statement_list (85)
+    on left: 44 45, on right: 35 44 57
+statement (86)
+    on left: 46 47 48 49 50 51 52 53 54 55 56, on right: 44 109 111
+    113 118 121 123 127 129
+compound_stmt (87)
+    on left: 57, on right: 46
+expression_stmt (88)
+    on left: 58 59, on right: 47 125
+expression (89)
+    on left: 60 61 62 63 64, on right: 58 60 65 66 67 96 100 102 109
+    111 123 127 140 141 143 147 148 149
+libfrd_exp (90)
+    on left: 65, on right: 63
+libfwt_exp (91)
+    on left: 66, on right: 64
+libcall_exp (92)
+    on left: 67, on right: 62
+unary_expression_assign (93)
+    on left: 68, on right: 60 134
+logical_expression (94)
+    on left: 69 70, on right: 61 69
+logop (95)
+    on left: 71 72, on right: 69
+relational_expression (96)
+    on left: 73 74, on right: 69 70
+relop (97)
+    on left: 75 76 77 78 79 80, on right: 73
+additive_expression (98)
+    on left: 81 82, on right: 73 74 81
+addop (99)
+    on left: 83 84, on right: 81
+term (100)
+    on left: 85 86, on right: 81 82 85
+mulop (101)
+    on left: 87 88 89, on right: 85
+unary_expression (102)
+    on left: 90 91, on right: 68 85 86 146
+unaop (103)
+    on left: 92 93 94, on right: 90
+member_expression (104)
+    on left: 95 96 97, on right: 90 91 95 96
+memop (105)
+    on left: 98 99, on right: 95 96
+factor (106)
+    on left: 100 101 102 103 104 105 106, on right: 97
+selection_stmt (107)
+    on left: 109 111, on right: 48
+$@6 (108)
+    on left: 107, on right: 109
+$@7 (109)
+    on left: 108, on right: 109
+$@8 (110)
+    on left: 110, on right: 111
+else_stmt (111)
+    on left: 113 114, on right: 109
+$@9 (112)
+    on left: 112, on right: 113
+if_rpar (113)
+    on left: 115, on right: 109
+if_else (114)
+    on left: 116, on right: 113
+case_stmt (115)
+    on left: 118 121, on right: 49
+$@10 (116)
+    on left: 117, on right: 118
+$@11 (117)
+    on left: 119, on right: 121
+$@12 (118)
+    on left: 120, on right: 121
+iteration_stmt (119)
+    on left: 123 125, on right: 50
+$@13 (120)
+    on left: 122, on right: 123
+$@14 (121)
+    on left: 124, on right: 125
+for_stmt (122)
+    on left: 127 129, on right: 125
+$@15 (123)
+    on left: 126, on right: 127
+$@16 (124)
+    on left: 128, on right: 129
+while_lpar (125)
+    on left: 130, on right: 123
+while_rpar (126)
+    on left: 131, on right: 123
+clear_stmt (127)
+    on left: 132, on right: 51
+sleep_stmt (128)
+    on left: 133, on right: 52
+funcall_stmt (129)
+    on left: 134 135, on right: 53
+call (130)
+    on left: 137, on right: 134 135
+$@17 (131)
+    on left: 136, on right: 137
+args (132)
+    on left: 138 139, on right: 137
+arg_list (133)
+    on left: 140 141, on right: 138 140
+return_stmt (134)
+    on left: 142 143 144, on right: 54
+input_stmt (135)
+    on left: 146, on right: 55
+$@18 (136)
+    on left: 145, on right: 146
+output_stmt (137)
+    on left: 147 148 149, on right: 56
+empty (138)
+    on left: 150, on right: 4 43 45 114 139
+
+
+State 0
+
+    0 $accept: . program $end
+
+    $default  reduce using rule 1 ($@1)
+
+    program  go to state 1
+    $@1      go to state 2
+
+
+State 1
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    2 program: $@1 . var_declaration_list fun_declaration_list
+
+    $default  reduce using rule 150 (empty)
+
+    var_declaration_list  go to state 4
+    empty                 go to state 5
+
+
+State 3
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 4
+
+    2 program: $@1 var_declaration_list . fun_declaration_list
+    3 var_declaration_list: var_declaration_list . var_declaration
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+
+    fun_declaration_list  go to state 12
+    var_declaration       go to state 13
+    type_specifier        go to state 14
+    optional_type         go to state 15
+    type                  go to state 16
+    struct_type           go to state 17
+    fun_declaration       go to state 18
+
+
+State 5
+
+    4 var_declaration_list: empty .
+
+    $default  reduce using rule 4 (var_declaration_list)
+
+
+State 6
+
+   18 type: VOID .
+
+    $default  reduce using rule 18 (type)
+
+
+State 7
+
+   16 type: INT .
+
+    $default  reduce using rule 16 (type)
+
+
+State 8
+
+   17 type: CHAR .
+
+    $default  reduce using rule 17 (type)
+
+
+State 9
+
+   21 struct_type: STRUCT . var $@2 LBRACE member_declaration_list RBRACE
+   22            | STRUCT . var
+
+    ID  shift, and go to state 19
+
+    var  go to state 20
+
+
+State 10
+
+   14 optional_type: STATIC .
+
+    $default  reduce using rule 14 (optional_type)
+
+
+State 11
+
+   15 optional_type: EXTERN .
+
+    $default  reduce using rule 15 (optional_type)
+
+
+State 12
+
+    2 program: $@1 var_declaration_list fun_declaration_list .
+    5 fun_declaration_list: fun_declaration_list . fun_declaration
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+
+    $default  reduce using rule 2 (program)
+
+    type_specifier   go to state 21
+    optional_type    go to state 15
+    type             go to state 16
+    struct_type      go to state 17
+    fun_declaration  go to state 22
+
+
+State 13
+
+    3 var_declaration_list: var_declaration_list var_declaration .
+
+    $default  reduce using rule 3 (var_declaration_list)
+
+
+State 14
+
+    7 var_declaration: type_specifier . var SEMICOLON
+    8                | type_specifier . var LBRACKET num RBRACKET SEMICOLON
+    9                | type_specifier . SEMICOLON
+   35 fun_declaration: type_specifier . var $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    SEMICOLON  shift, and go to state 23
+    ID         shift, and go to state 19
+
+    var  go to state 24
+
+
+State 15
+
+   10 type_specifier: optional_type . type MULTIPLY
+   11               | optional_type . type
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+
+    type         go to state 25
+    struct_type  go to state 17
+
+
+State 16
+
+   12 type_specifier: type . MULTIPLY
+   13               | type .
+
+    MULTIPLY  shift, and go to state 26
+
+    $default  reduce using rule 13 (type_specifier)
+
+
+State 17
+
+   19 type: struct_type .
+
+    $default  reduce using rule 19 (type)
+
+
+State 18
+
+    6 fun_declaration_list: fun_declaration .
+
+    $default  reduce using rule 6 (fun_declaration_list)
+
+
+State 19
+
+   27 var: ID .
+
+    $default  reduce using rule 27 (var)
+
+
+State 20
+
+   21 struct_type: STRUCT var . $@2 LBRACE member_declaration_list RBRACE
+   22            | STRUCT var .
+
+    LBRACE    reduce using rule 20 ($@2)
+    $default  reduce using rule 22 (struct_type)
+
+    $@2  go to state 27
+
+
+State 21
+
+   35 fun_declaration: type_specifier . var $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    ID  shift, and go to state 19
+
+    var  go to state 28
+
+
+State 22
+
+    5 fun_declaration_list: fun_declaration_list fun_declaration .
+
+    $default  reduce using rule 5 (fun_declaration_list)
+
+
+State 23
+
+    9 var_declaration: type_specifier SEMICOLON .
+
+    $default  reduce using rule 9 (var_declaration)
+
+
+State 24
+
+    7 var_declaration: type_specifier var . SEMICOLON
+    8                | type_specifier var . LBRACKET num RBRACKET SEMICOLON
+   35 fun_declaration: type_specifier var . $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    SEMICOLON  shift, and go to state 29
+    LBRACKET   shift, and go to state 30
+
+    $default  reduce using rule 32 ($@3)
+
+    $@3  go to state 31
+
+
+State 25
+
+   10 type_specifier: optional_type type . MULTIPLY
+   11               | optional_type type .
+
+    MULTIPLY  shift, and go to state 32
+
+    $default  reduce using rule 11 (type_specifier)
+
+
+State 26
+
+   12 type_specifier: type MULTIPLY .
+
+    $default  reduce using rule 12 (type_specifier)
+
+
+State 27
+
+   21 struct_type: STRUCT var $@2 . LBRACE member_declaration_list RBRACE
+
+    LBRACE  shift, and go to state 33
+
+
+State 28
+
+   35 fun_declaration: type_specifier var . $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    $default  reduce using rule 32 ($@3)
+
+    $@3  go to state 31
+
+
+State 29
+
+    7 var_declaration: type_specifier var SEMICOLON .
+
+    $default  reduce using rule 7 (var_declaration)
+
+
+State 30
+
+    8 var_declaration: type_specifier var LBRACKET . num RBRACKET SEMICOLON
+
+    OCTNUM     shift, and go to state 34
+    HEXNUM     shift, and go to state 35
+    NUM        shift, and go to state 36
+    CHARCONST  shift, and go to state 37
+
+    num  go to state 38
+
+
+State 31
+
+   35 fun_declaration: type_specifier var $@3 . LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    LPAR  shift, and go to state 39
+
+
+State 32
+
+   10 type_specifier: optional_type type MULTIPLY .
+
+    $default  reduce using rule 10 (type_specifier)
+
+
+State 33
+
+   21 struct_type: STRUCT var $@2 LBRACE . member_declaration_list RBRACE
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+
+    type_specifier           go to state 40
+    optional_type            go to state 15
+    type                     go to state 16
+    struct_type              go to state 17
+    member_declaration_list  go to state 41
+    member_declaration       go to state 42
+
+
+State 34
+
+   29 num: OCTNUM .
+
+    $default  reduce using rule 29 (num)
+
+
+State 35
+
+   30 num: HEXNUM .
+
+    $default  reduce using rule 30 (num)
+
+
+State 36
+
+   28 num: NUM .
+
+    $default  reduce using rule 28 (num)
+
+
+State 37
+
+   31 num: CHARCONST .
+
+    $default  reduce using rule 31 (num)
+
+
+State 38
+
+    8 var_declaration: type_specifier var LBRACKET num . RBRACKET SEMICOLON
+
+    RBRACKET  shift, and go to state 43
+
+
+State 39
+
+   35 fun_declaration: type_specifier var $@3 LPAR . params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    VOID    shift, and go to state 44
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+
+    type_specifier  go to state 45
+    optional_type   go to state 15
+    type            go to state 16
+    struct_type     go to state 17
+    params          go to state 46
+    param_list      go to state 47
+    param           go to state 48
+
+
+State 40
+
+   25 member_declaration: type_specifier . var SEMICOLON
+   26                   | type_specifier . var LBRACKET num RBRACKET SEMICOLON
+
+    ID  shift, and go to state 19
+
+    var  go to state 49
+
+
+State 41
+
+   21 struct_type: STRUCT var $@2 LBRACE member_declaration_list . RBRACE
+   23 member_declaration_list: member_declaration_list . member_declaration
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+    RBRACE  shift, and go to state 50
+
+    type_specifier      go to state 40
+    optional_type       go to state 15
+    type                go to state 16
+    struct_type         go to state 17
+    member_declaration  go to state 51
+
+
+State 42
+
+   24 member_declaration_list: member_declaration .
+
+    $default  reduce using rule 24 (member_declaration_list)
+
+
+State 43
+
+    8 var_declaration: type_specifier var LBRACKET num RBRACKET . SEMICOLON
+
+    SEMICOLON  shift, and go to state 52
+
+
+State 44
+
+   18 type: VOID .
+   37 params: VOID .
+
+    RPAR      reduce using rule 37 (params)
+    $default  reduce using rule 18 (type)
+
+
+State 45
+
+   40 param: type_specifier . var
+   41      | type_specifier . var LBRACKET RBRACKET
+
+    ID  shift, and go to state 19
+
+    var  go to state 53
+
+
+State 46
+
+   35 fun_declaration: type_specifier var $@3 LPAR params . RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    RPAR  shift, and go to state 54
+
+
+State 47
+
+   36 params: param_list .
+   38 param_list: param_list . COMMA param
+
+    COMMA  shift, and go to state 55
+
+    $default  reduce using rule 36 (params)
+
+
+State 48
+
+   39 param_list: param .
+
+    $default  reduce using rule 39 (param_list)
+
+
+State 49
+
+   25 member_declaration: type_specifier var . SEMICOLON
+   26                   | type_specifier var . LBRACKET num RBRACKET SEMICOLON
+
+    SEMICOLON  shift, and go to state 56
+    LBRACKET   shift, and go to state 57
+
+
+State 50
+
+   21 struct_type: STRUCT var $@2 LBRACE member_declaration_list RBRACE .
+
+    $default  reduce using rule 21 (struct_type)
+
+
+State 51
+
+   23 member_declaration_list: member_declaration_list member_declaration .
+
+    $default  reduce using rule 23 (member_declaration_list)
+
+
+State 52
+
+    8 var_declaration: type_specifier var LBRACKET num RBRACKET SEMICOLON .
+
+    $default  reduce using rule 8 (var_declaration)
+
+
+State 53
+
+   40 param: type_specifier var .
+   41      | type_specifier var . LBRACKET RBRACKET
+
+    LBRACKET  shift, and go to state 58
+
+    $default  reduce using rule 40 (param)
+
+
+State 54
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR . $@4 LBRACE local_declarations $@5 statement_list RBRACE
+
+    $default  reduce using rule 33 ($@4)
+
+    $@4  go to state 59
+
+
+State 55
+
+   38 param_list: param_list COMMA . param
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+
+    type_specifier  go to state 45
+    optional_type   go to state 15
+    type            go to state 16
+    struct_type     go to state 17
+    param           go to state 60
+
+
+State 56
+
+   25 member_declaration: type_specifier var SEMICOLON .
+
+    $default  reduce using rule 25 (member_declaration)
+
+
+State 57
+
+   26 member_declaration: type_specifier var LBRACKET . num RBRACKET SEMICOLON
+
+    OCTNUM     shift, and go to state 34
+    HEXNUM     shift, and go to state 35
+    NUM        shift, and go to state 36
+    CHARCONST  shift, and go to state 37
+
+    num  go to state 61
+
+
+State 58
+
+   41 param: type_specifier var LBRACKET . RBRACKET
+
+    RBRACKET  shift, and go to state 62
+
+
+State 59
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 . LBRACE local_declarations $@5 statement_list RBRACE
+
+    LBRACE  shift, and go to state 63
+
+
+State 60
+
+   38 param_list: param_list COMMA param .
+
+    $default  reduce using rule 38 (param_list)
+
+
+State 61
+
+   26 member_declaration: type_specifier var LBRACKET num . RBRACKET SEMICOLON
+
+    RBRACKET  shift, and go to state 64
+
+
+State 62
+
+   41 param: type_specifier var LBRACKET RBRACKET .
+
+    $default  reduce using rule 41 (param)
+
+
+State 63
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 LBRACE . local_declarations $@5 statement_list RBRACE
+
+    $default  reduce using rule 150 (empty)
+
+    local_declarations  go to state 65
+    empty               go to state 66
+
+
+State 64
+
+   26 member_declaration: type_specifier var LBRACKET num RBRACKET . SEMICOLON
+
+    SEMICOLON  shift, and go to state 67
+
+
+State 65
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 LBRACE local_declarations . $@5 statement_list RBRACE
+   42 local_declarations: local_declarations . var_declaration
+
+    VOID    shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    STRUCT  shift, and go to state 9
+    STATIC  shift, and go to state 10
+    EXTERN  shift, and go to state 11
+
+    $default  reduce using rule 34 ($@5)
+
+    var_declaration  go to state 68
+    type_specifier   go to state 69
+    optional_type    go to state 15
+    type             go to state 16
+    struct_type      go to state 17
+    $@5              go to state 70
+
+
+State 66
+
+   43 local_declarations: empty .
+
+    $default  reduce using rule 43 (local_declarations)
+
+
+State 67
+
+   26 member_declaration: type_specifier var LBRACKET num RBRACKET SEMICOLON .
+
+    $default  reduce using rule 26 (member_declaration)
+
+
+State 68
+
+   42 local_declarations: local_declarations var_declaration .
+
+    $default  reduce using rule 42 (local_declarations)
+
+
+State 69
+
+    7 var_declaration: type_specifier . var SEMICOLON
+    8                | type_specifier . var LBRACKET num RBRACKET SEMICOLON
+    9                | type_specifier . SEMICOLON
+
+    SEMICOLON  shift, and go to state 23
+    ID         shift, and go to state 19
+
+    var  go to state 71
+
+
+State 70
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 . statement_list RBRACE
+
+    $default  reduce using rule 150 (empty)
+
+    statement_list  go to state 72
+    empty           go to state 73
+
+
+State 71
+
+    7 var_declaration: type_specifier var . SEMICOLON
+    8                | type_specifier var . LBRACKET num RBRACKET SEMICOLON
+
+    SEMICOLON  shift, and go to state 29
+    LBRACKET   shift, and go to state 30
+
+
+State 72
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list . RBRACE
+   44 statement_list: statement_list . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    RBRACE       shift, and go to state 95
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 102
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 73
+
+   45 statement_list: empty .
+
+    $default  reduce using rule 45 (statement_list)
+
+
+State 74
+
+  109 selection_stmt: IF . LPAR expression $@6 if_rpar statement $@7 else_stmt
+
+    LPAR  shift, and go to state 129
+
+
+State 75
+
+  111 selection_stmt: SWITCH . LPAR expression RPAR $@8 statement
+
+    LPAR  shift, and go to state 130
+
+
+State 76
+
+  118 case_stmt: CASE . num COLON $@10 statement
+
+    OCTNUM     shift, and go to state 34
+    HEXNUM     shift, and go to state 35
+    NUM        shift, and go to state 36
+    CHARCONST  shift, and go to state 37
+
+    num  go to state 131
+
+
+State 77
+
+  123 iteration_stmt: WHILE . while_lpar expression $@13 while_rpar statement
+
+    LPAR  shift, and go to state 132
+
+    while_lpar  go to state 133
+
+
+State 78
+
+  125 iteration_stmt: FOR . LPAR expression_stmt expression_stmt $@14 for_stmt
+
+    LPAR  shift, and go to state 134
+
+
+State 79
+
+  142 return_stmt: RETURN . SEMICOLON
+  143            | RETURN . expression SEMICOLON
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 135
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 137
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 80
+
+  144 return_stmt: BREAK . SEMICOLON
+
+    SEMICOLON  shift, and go to state 139
+
+
+State 81
+
+  132 clear_stmt: CLEAR .
+
+    $default  reduce using rule 132 (clear_stmt)
+
+
+State 82
+
+  133 sleep_stmt: SLEEP . LPAR num RPAR
+
+    LPAR  shift, and go to state 140
+
+
+State 83
+
+  146 input_stmt: INPUT . unary_expression $@18 SEMICOLON
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+
+    var                go to state 136
+    num                go to state 101
+    unary_expression   go to state 141
+    unaop              go to state 115
+    member_expression  go to state 116
+    factor             go to state 117
+
+
+State 84
+
+  148 output_stmt: OUTPUTS . expression SEMICOLON
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 142
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 85
+
+  149 output_stmt: OUTPUTC . expression SEMICOLON
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 143
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 86
+
+  147 output_stmt: OUTPUT . expression SEMICOLON
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 144
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 87
+
+  104 factor: PLUS . num
+
+    OCTNUM     shift, and go to state 34
+    HEXNUM     shift, and go to state 35
+    NUM        shift, and go to state 36
+    CHARCONST  shift, and go to state 37
+
+    num  go to state 145
+
+
+State 88
+
+  105 factor: MINUS . num
+
+    OCTNUM     shift, and go to state 34
+    HEXNUM     shift, and go to state 35
+    NUM        shift, and go to state 36
+    CHARCONST  shift, and go to state 37
+
+    num  go to state 146
+
+
+State 89
+
+   94 unaop: MULTIPLY .
+
+    $default  reduce using rule 94 (unaop)
+
+
+State 90
+
+   92 unaop: EXCLAMATION .
+
+    $default  reduce using rule 92 (unaop)
+
+
+State 91
+
+   93 unaop: AMPERSAND .
+
+    $default  reduce using rule 93 (unaop)
+
+
+State 92
+
+   59 expression_stmt: SEMICOLON .
+
+    $default  reduce using rule 59 (expression_stmt)
+
+
+State 93
+
+  100 factor: LPAR . expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 147
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 94
+
+   57 compound_stmt: LBRACE . statement_list RBRACE
+
+    $default  reduce using rule 150 (empty)
+
+    statement_list  go to state 148
+    empty           go to state 73
+
+
+State 95
+
+   35 fun_declaration: type_specifier var $@3 LPAR params RPAR $@4 LBRACE local_declarations $@5 statement_list RBRACE .
+
+    $default  reduce using rule 35 (fun_declaration)
+
+
+State 96
+
+  106 factor: STRINGCONST .
+
+    $default  reduce using rule 106 (factor)
+
+
+State 97
+
+   67 libcall_exp: LIBCALL . LPAR expression COMMA expression COMMA expression RPAR
+
+    LPAR  shift, and go to state 149
+
+
+State 98
+
+   65 libfrd_exp: LIBFRD . LPAR expression COMMA expression COMMA expression RPAR
+
+    LPAR  shift, and go to state 150
+
+
+State 99
+
+   66 libfwt_exp: LIBFWT . LPAR expression COMMA expression COMMA expression RPAR
+
+    LPAR  shift, and go to state 151
+
+
+State 100
+
+  101 factor: var .
+  102       | var . LBRACKET expression RBRACKET
+  137 call: var . $@17 LPAR args RPAR
+
+    LBRACKET  shift, and go to state 152
+
+    LPAR      reduce using rule 136 ($@17)
+    $default  reduce using rule 101 (factor)
+
+    $@17  go to state 153
+
+
+State 101
+
+  103 factor: num .
+
+    $default  reduce using rule 103 (factor)
+
+
+State 102
+
+   44 statement_list: statement_list statement .
+
+    $default  reduce using rule 44 (statement_list)
+
+
+State 103
+
+   46 statement: compound_stmt .
+
+    $default  reduce using rule 46 (statement)
+
+
+State 104
+
+   47 statement: expression_stmt .
+
+    $default  reduce using rule 47 (statement)
+
+
+State 105
+
+   58 expression_stmt: expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 154
+
+
+State 106
+
+   63 expression: libfrd_exp .
+
+    $default  reduce using rule 63 (expression)
+
+
+State 107
+
+   64 expression: libfwt_exp .
+
+    $default  reduce using rule 64 (expression)
+
+
+State 108
+
+   62 expression: libcall_exp .
+
+    $default  reduce using rule 62 (expression)
+
+
+State 109
+
+   60 expression: unary_expression_assign . expression
+  134 funcall_stmt: unary_expression_assign . call
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 100
+    num                      go to state 101
+    expression               go to state 155
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    call                     go to state 156
+
+
+State 110
+
+   61 expression: logical_expression .
+   69 logical_expression: logical_expression . logop relational_expression
+
+    DOUBLEOR   shift, and go to state 157
+    DOUBLEAND  shift, and go to state 158
+
+    $default  reduce using rule 61 (expression)
+
+    logop  go to state 159
+
+
+State 111
+
+   70 logical_expression: relational_expression .
+
+    $default  reduce using rule 70 (logical_expression)
+
+
+State 112
+
+   73 relational_expression: additive_expression . relop additive_expression
+   74                      | additive_expression .
+   81 additive_expression: additive_expression . addop term
+
+    PLUS   shift, and go to state 160
+    MINUS  shift, and go to state 161
+    LT     shift, and go to state 162
+    LE     shift, and go to state 163
+    GT     shift, and go to state 164
+    GE     shift, and go to state 165
+    EQ     shift, and go to state 166
+    NE     shift, and go to state 167
+
+    $default  reduce using rule 74 (relational_expression)
+
+    relop  go to state 168
+    addop  go to state 169
+
+
+State 113
+
+   82 additive_expression: term .
+   85 term: term . mulop unary_expression
+
+    MULTIPLY  shift, and go to state 170
+    DIVIDE    shift, and go to state 171
+    PERCENT   shift, and go to state 172
+
+    $default  reduce using rule 82 (additive_expression)
+
+    mulop  go to state 173
+
+
+State 114
+
+   68 unary_expression_assign: unary_expression . ASSIGN
+   86 term: unary_expression .
+
+    ASSIGN  shift, and go to state 174
+
+    $default  reduce using rule 86 (term)
+
+
+State 115
+
+   90 unary_expression: unaop . member_expression
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+
+    var                go to state 136
+    num                go to state 101
+    member_expression  go to state 175
+    factor             go to state 117
+
+
+State 116
+
+   91 unary_expression: member_expression .
+   95 member_expression: member_expression . memop var
+   96                  | member_expression . memop var LBRACKET expression RBRACKET
+
+    PERIOD  shift, and go to state 176
+    ARROW   shift, and go to state 177
+
+    $default  reduce using rule 91 (unary_expression)
+
+    memop  go to state 178
+
+
+State 117
+
+   97 member_expression: factor .
+
+    $default  reduce using rule 97 (member_expression)
+
+
+State 118
+
+   48 statement: selection_stmt .
+
+    $default  reduce using rule 48 (statement)
+
+
+State 119
+
+   49 statement: case_stmt .
+
+    $default  reduce using rule 49 (statement)
+
+
+State 120
+
+  121 case_stmt: $@11 . DEFAULT COLON $@12 statement
+
+    DEFAULT  shift, and go to state 179
+
+
+State 121
+
+   50 statement: iteration_stmt .
+
+    $default  reduce using rule 50 (statement)
+
+
+State 122
+
+   51 statement: clear_stmt .
+
+    $default  reduce using rule 51 (statement)
+
+
+State 123
+
+   52 statement: sleep_stmt .
+
+    $default  reduce using rule 52 (statement)
+
+
+State 124
+
+   53 statement: funcall_stmt .
+
+    $default  reduce using rule 53 (statement)
+
+
+State 125
+
+  135 funcall_stmt: call .
+
+    $default  reduce using rule 135 (funcall_stmt)
+
+
+State 126
+
+   54 statement: return_stmt .
+
+    $default  reduce using rule 54 (statement)
+
+
+State 127
+
+   55 statement: input_stmt .
+
+    $default  reduce using rule 55 (statement)
+
+
+State 128
+
+   56 statement: output_stmt .
+
+    $default  reduce using rule 56 (statement)
+
+
+State 129
+
+  109 selection_stmt: IF LPAR . expression $@6 if_rpar statement $@7 else_stmt
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 180
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 130
+
+  111 selection_stmt: SWITCH LPAR . expression RPAR $@8 statement
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 181
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 131
+
+  118 case_stmt: CASE num . COLON $@10 statement
+
+    COLON  shift, and go to state 182
+
+
+State 132
+
+  130 while_lpar: LPAR .
+
+    $default  reduce using rule 130 (while_lpar)
+
+
+State 133
+
+  123 iteration_stmt: WHILE while_lpar . expression $@13 while_rpar statement
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 183
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 134
+
+  125 iteration_stmt: FOR LPAR . expression_stmt expression_stmt $@14 for_stmt
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression_stmt          go to state 184
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 135
+
+  142 return_stmt: RETURN SEMICOLON .
+
+    $default  reduce using rule 142 (return_stmt)
+
+
+State 136
+
+  101 factor: var .
+  102       | var . LBRACKET expression RBRACKET
+
+    LBRACKET  shift, and go to state 152
+
+    $default  reduce using rule 101 (factor)
+
+
+State 137
+
+  143 return_stmt: RETURN expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 185
+
+
+State 138
+
+   60 expression: unary_expression_assign . expression
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 155
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 139
+
+  144 return_stmt: BREAK SEMICOLON .
+
+    $default  reduce using rule 144 (return_stmt)
+
+
+State 140
+
+  133 sleep_stmt: SLEEP LPAR . num RPAR
+
+    OCTNUM     shift, and go to state 34
+    HEXNUM     shift, and go to state 35
+    NUM        shift, and go to state 36
+    CHARCONST  shift, and go to state 37
+
+    num  go to state 186
+
+
+State 141
+
+  146 input_stmt: INPUT unary_expression . $@18 SEMICOLON
+
+    $default  reduce using rule 145 ($@18)
+
+    $@18  go to state 187
+
+
+State 142
+
+  148 output_stmt: OUTPUTS expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 188
+
+
+State 143
+
+  149 output_stmt: OUTPUTC expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 189
+
+
+State 144
+
+  147 output_stmt: OUTPUT expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 190
+
+
+State 145
+
+  104 factor: PLUS num .
+
+    $default  reduce using rule 104 (factor)
+
+
+State 146
+
+  105 factor: MINUS num .
+
+    $default  reduce using rule 105 (factor)
+
+
+State 147
+
+  100 factor: LPAR expression . RPAR
+
+    RPAR  shift, and go to state 191
+
+
+State 148
+
+   44 statement_list: statement_list . statement
+   57 compound_stmt: LBRACE statement_list . RBRACE
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    RBRACE       shift, and go to state 192
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 102
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 149
+
+   67 libcall_exp: LIBCALL LPAR . expression COMMA expression COMMA expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 193
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 150
+
+   65 libfrd_exp: LIBFRD LPAR . expression COMMA expression COMMA expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 194
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 151
+
+   66 libfwt_exp: LIBFWT LPAR . expression COMMA expression COMMA expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 195
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 152
+
+  102 factor: var LBRACKET . expression RBRACKET
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 196
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 153
+
+  137 call: var $@17 . LPAR args RPAR
+
+    LPAR  shift, and go to state 197
+
+
+State 154
+
+   58 expression_stmt: expression SEMICOLON .
+
+    $default  reduce using rule 58 (expression_stmt)
+
+
+State 155
+
+   60 expression: unary_expression_assign expression .
+
+    $default  reduce using rule 60 (expression)
+
+
+State 156
+
+  134 funcall_stmt: unary_expression_assign call .
+
+    $default  reduce using rule 134 (funcall_stmt)
+
+
+State 157
+
+   71 logop: DOUBLEOR .
+
+    $default  reduce using rule 71 (logop)
+
+
+State 158
+
+   72 logop: DOUBLEAND .
+
+    $default  reduce using rule 72 (logop)
+
+
+State 159
+
+   69 logical_expression: logical_expression logop . relational_expression
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+
+    var                    go to state 136
+    num                    go to state 101
+    relational_expression  go to state 198
+    additive_expression    go to state 112
+    term                   go to state 113
+    unary_expression       go to state 199
+    unaop                  go to state 115
+    member_expression      go to state 116
+    factor                 go to state 117
+
+
+State 160
+
+   83 addop: PLUS .
+
+    $default  reduce using rule 83 (addop)
+
+
+State 161
+
+   84 addop: MINUS .
+
+    $default  reduce using rule 84 (addop)
+
+
+State 162
+
+   75 relop: LT .
+
+    $default  reduce using rule 75 (relop)
+
+
+State 163
+
+   76 relop: LE .
+
+    $default  reduce using rule 76 (relop)
+
+
+State 164
+
+   77 relop: GT .
+
+    $default  reduce using rule 77 (relop)
+
+
+State 165
+
+   78 relop: GE .
+
+    $default  reduce using rule 78 (relop)
+
+
+State 166
+
+   79 relop: EQ .
+
+    $default  reduce using rule 79 (relop)
+
+
+State 167
+
+   80 relop: NE .
+
+    $default  reduce using rule 80 (relop)
+
+
+State 168
+
+   73 relational_expression: additive_expression relop . additive_expression
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+
+    var                  go to state 136
+    num                  go to state 101
+    additive_expression  go to state 200
+    term                 go to state 113
+    unary_expression     go to state 199
+    unaop                go to state 115
+    member_expression    go to state 116
+    factor               go to state 117
+
+
+State 169
+
+   81 additive_expression: additive_expression addop . term
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+
+    var                go to state 136
+    num                go to state 101
+    term               go to state 201
+    unary_expression   go to state 199
+    unaop              go to state 115
+    member_expression  go to state 116
+    factor             go to state 117
+
+
+State 170
+
+   87 mulop: MULTIPLY .
+
+    $default  reduce using rule 87 (mulop)
+
+
+State 171
+
+   88 mulop: DIVIDE .
+
+    $default  reduce using rule 88 (mulop)
+
+
+State 172
+
+   89 mulop: PERCENT .
+
+    $default  reduce using rule 89 (mulop)
+
+
+State 173
+
+   85 term: term mulop . unary_expression
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+
+    var                go to state 136
+    num                go to state 101
+    unary_expression   go to state 202
+    unaop              go to state 115
+    member_expression  go to state 116
+    factor             go to state 117
+
+
+State 174
+
+   68 unary_expression_assign: unary_expression ASSIGN .
+
+    $default  reduce using rule 68 (unary_expression_assign)
+
+
+State 175
+
+   90 unary_expression: unaop member_expression .
+   95 member_expression: member_expression . memop var
+   96                  | member_expression . memop var LBRACKET expression RBRACKET
+
+    PERIOD  shift, and go to state 176
+    ARROW   shift, and go to state 177
+
+    $default  reduce using rule 90 (unary_expression)
+
+    memop  go to state 178
+
+
+State 176
+
+   98 memop: PERIOD .
+
+    $default  reduce using rule 98 (memop)
+
+
+State 177
+
+   99 memop: ARROW .
+
+    $default  reduce using rule 99 (memop)
+
+
+State 178
+
+   95 member_expression: member_expression memop . var
+   96                  | member_expression memop . var LBRACKET expression RBRACKET
+
+    ID  shift, and go to state 19
+
+    var  go to state 203
+
+
+State 179
+
+  121 case_stmt: $@11 DEFAULT . COLON $@12 statement
+
+    COLON  shift, and go to state 204
+
+
+State 180
+
+  109 selection_stmt: IF LPAR expression . $@6 if_rpar statement $@7 else_stmt
+
+    $default  reduce using rule 107 ($@6)
+
+    $@6  go to state 205
+
+
+State 181
+
+  111 selection_stmt: SWITCH LPAR expression . RPAR $@8 statement
+
+    RPAR  shift, and go to state 206
+
+
+State 182
+
+  118 case_stmt: CASE num COLON . $@10 statement
+
+    $default  reduce using rule 117 ($@10)
+
+    $@10  go to state 207
+
+
+State 183
+
+  123 iteration_stmt: WHILE while_lpar expression . $@13 while_rpar statement
+
+    $default  reduce using rule 122 ($@13)
+
+    $@13  go to state 208
+
+
+State 184
+
+  125 iteration_stmt: FOR LPAR expression_stmt . expression_stmt $@14 for_stmt
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression_stmt          go to state 209
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 185
+
+  143 return_stmt: RETURN expression SEMICOLON .
+
+    $default  reduce using rule 143 (return_stmt)
+
+
+State 186
+
+  133 sleep_stmt: SLEEP LPAR num . RPAR
+
+    RPAR  shift, and go to state 210
+
+
+State 187
+
+  146 input_stmt: INPUT unary_expression $@18 . SEMICOLON
+
+    SEMICOLON  shift, and go to state 211
+
+
+State 188
+
+  148 output_stmt: OUTPUTS expression SEMICOLON .
+
+    $default  reduce using rule 148 (output_stmt)
+
+
+State 189
+
+  149 output_stmt: OUTPUTC expression SEMICOLON .
+
+    $default  reduce using rule 149 (output_stmt)
+
+
+State 190
+
+  147 output_stmt: OUTPUT expression SEMICOLON .
+
+    $default  reduce using rule 147 (output_stmt)
+
+
+State 191
+
+  100 factor: LPAR expression RPAR .
+
+    $default  reduce using rule 100 (factor)
+
+
+State 192
+
+   57 compound_stmt: LBRACE statement_list RBRACE .
+
+    $default  reduce using rule 57 (compound_stmt)
+
+
+State 193
+
+   67 libcall_exp: LIBCALL LPAR expression . COMMA expression COMMA expression RPAR
+
+    COMMA  shift, and go to state 212
+
+
+State 194
+
+   65 libfrd_exp: LIBFRD LPAR expression . COMMA expression COMMA expression RPAR
+
+    COMMA  shift, and go to state 213
+
+
+State 195
+
+   66 libfwt_exp: LIBFWT LPAR expression . COMMA expression COMMA expression RPAR
+
+    COMMA  shift, and go to state 214
+
+
+State 196
+
+  102 factor: var LBRACKET expression . RBRACKET
+
+    RBRACKET  shift, and go to state 215
+
+
+State 197
+
+  137 call: var $@17 LPAR . args RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 150 (empty)
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 216
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    args                     go to state 217
+    arg_list                 go to state 218
+    empty                    go to state 219
+
+
+State 198
+
+   69 logical_expression: logical_expression logop relational_expression .
+
+    $default  reduce using rule 69 (logical_expression)
+
+
+State 199
+
+   86 term: unary_expression .
+
+    $default  reduce using rule 86 (term)
+
+
+State 200
+
+   73 relational_expression: additive_expression relop additive_expression .
+   81 additive_expression: additive_expression . addop term
+
+    PLUS   shift, and go to state 160
+    MINUS  shift, and go to state 161
+
+    $default  reduce using rule 73 (relational_expression)
+
+    addop  go to state 169
+
+
+State 201
+
+   81 additive_expression: additive_expression addop term .
+   85 term: term . mulop unary_expression
+
+    MULTIPLY  shift, and go to state 170
+    DIVIDE    shift, and go to state 171
+    PERCENT   shift, and go to state 172
+
+    $default  reduce using rule 81 (additive_expression)
+
+    mulop  go to state 173
+
+
+State 202
+
+   85 term: term mulop unary_expression .
+
+    $default  reduce using rule 85 (term)
+
+
+State 203
+
+   95 member_expression: member_expression memop var .
+   96                  | member_expression memop var . LBRACKET expression RBRACKET
+
+    LBRACKET  shift, and go to state 220
+
+    $default  reduce using rule 95 (member_expression)
+
+
+State 204
+
+  121 case_stmt: $@11 DEFAULT COLON . $@12 statement
+
+    $default  reduce using rule 120 ($@12)
+
+    $@12  go to state 221
+
+
+State 205
+
+  109 selection_stmt: IF LPAR expression $@6 . if_rpar statement $@7 else_stmt
+
+    RPAR  shift, and go to state 222
+
+    if_rpar  go to state 223
+
+
+State 206
+
+  111 selection_stmt: SWITCH LPAR expression RPAR . $@8 statement
+
+    $default  reduce using rule 110 ($@8)
+
+    $@8  go to state 224
+
+
+State 207
+
+  118 case_stmt: CASE num COLON $@10 . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 225
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 208
+
+  123 iteration_stmt: WHILE while_lpar expression $@13 . while_rpar statement
+
+    RPAR  shift, and go to state 226
+
+    while_rpar  go to state 227
+
+
+State 209
+
+  125 iteration_stmt: FOR LPAR expression_stmt expression_stmt . $@14 for_stmt
+
+    $default  reduce using rule 124 ($@14)
+
+    $@14  go to state 228
+
+
+State 210
+
+  133 sleep_stmt: SLEEP LPAR num RPAR .
+
+    $default  reduce using rule 133 (sleep_stmt)
+
+
+State 211
+
+  146 input_stmt: INPUT unary_expression $@18 SEMICOLON .
+
+    $default  reduce using rule 146 (input_stmt)
+
+
+State 212
+
+   67 libcall_exp: LIBCALL LPAR expression COMMA . expression COMMA expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 229
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 213
+
+   65 libfrd_exp: LIBFRD LPAR expression COMMA . expression COMMA expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 230
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 214
+
+   66 libfwt_exp: LIBFWT LPAR expression COMMA . expression COMMA expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 231
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 215
+
+  102 factor: var LBRACKET expression RBRACKET .
+
+    $default  reduce using rule 102 (factor)
+
+
+State 216
+
+  141 arg_list: expression .
+
+    $default  reduce using rule 141 (arg_list)
+
+
+State 217
+
+  137 call: var $@17 LPAR args . RPAR
+
+    RPAR  shift, and go to state 232
+
+
+State 218
+
+  138 args: arg_list .
+  140 arg_list: arg_list . COMMA expression
+
+    COMMA  shift, and go to state 233
+
+    $default  reduce using rule 138 (args)
+
+
+State 219
+
+  139 args: empty .
+
+    $default  reduce using rule 139 (args)
+
+
+State 220
+
+   96 member_expression: member_expression memop var LBRACKET . expression RBRACKET
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 234
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 221
+
+  121 case_stmt: $@11 DEFAULT COLON $@12 . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 235
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 222
+
+  115 if_rpar: RPAR .
+
+    $default  reduce using rule 115 (if_rpar)
+
+
+State 223
+
+  109 selection_stmt: IF LPAR expression $@6 if_rpar . statement $@7 else_stmt
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 236
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 224
+
+  111 selection_stmt: SWITCH LPAR expression RPAR $@8 . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 237
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 225
+
+  118 case_stmt: CASE num COLON $@10 statement .
+
+    $default  reduce using rule 118 (case_stmt)
+
+
+State 226
+
+  131 while_rpar: RPAR .
+
+    $default  reduce using rule 131 (while_rpar)
+
+
+State 227
+
+  123 iteration_stmt: WHILE while_lpar expression $@13 while_rpar . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 238
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 228
+
+  125 iteration_stmt: FOR LPAR expression_stmt expression_stmt $@14 . for_stmt
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    RPAR         shift, and go to state 239
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 240
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    for_stmt                 go to state 241
+
+
+State 229
+
+   67 libcall_exp: LIBCALL LPAR expression COMMA expression . COMMA expression RPAR
+
+    COMMA  shift, and go to state 242
+
+
+State 230
+
+   65 libfrd_exp: LIBFRD LPAR expression COMMA expression . COMMA expression RPAR
+
+    COMMA  shift, and go to state 243
+
+
+State 231
+
+   66 libfwt_exp: LIBFWT LPAR expression COMMA expression . COMMA expression RPAR
+
+    COMMA  shift, and go to state 244
+
+
+State 232
+
+  137 call: var $@17 LPAR args RPAR .
+
+    $default  reduce using rule 137 (call)
+
+
+State 233
+
+  140 arg_list: arg_list COMMA . expression
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 245
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 234
+
+   96 member_expression: member_expression memop var LBRACKET expression . RBRACKET
+
+    RBRACKET  shift, and go to state 246
+
+
+State 235
+
+  121 case_stmt: $@11 DEFAULT COLON $@12 statement .
+
+    $default  reduce using rule 121 (case_stmt)
+
+
+State 236
+
+  109 selection_stmt: IF LPAR expression $@6 if_rpar statement . $@7 else_stmt
+
+    $default  reduce using rule 108 ($@7)
+
+    $@7  go to state 247
+
+
+State 237
+
+  111 selection_stmt: SWITCH LPAR expression RPAR $@8 statement .
+
+    $default  reduce using rule 111 (selection_stmt)
+
+
+State 238
+
+  123 iteration_stmt: WHILE while_lpar expression $@13 while_rpar statement .
+
+    $default  reduce using rule 123 (iteration_stmt)
+
+
+State 239
+
+  129 for_stmt: RPAR . $@16 statement
+
+    $default  reduce using rule 128 ($@16)
+
+    $@16  go to state 248
+
+
+State 240
+
+  127 for_stmt: expression . RPAR $@15 statement
+
+    RPAR  shift, and go to state 249
+
+
+State 241
+
+  125 iteration_stmt: FOR LPAR expression_stmt expression_stmt $@14 for_stmt .
+
+    $default  reduce using rule 125 (iteration_stmt)
+
+
+State 242
+
+   67 libcall_exp: LIBCALL LPAR expression COMMA expression COMMA . expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 250
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 243
+
+   65 libfrd_exp: LIBFRD LPAR expression COMMA expression COMMA . expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 251
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 244
+
+   66 libfwt_exp: LIBFWT LPAR expression COMMA expression COMMA . expression RPAR
+
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    LPAR         shift, and go to state 93
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    var                      go to state 136
+    num                      go to state 101
+    expression               go to state 252
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 138
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+
+
+State 245
+
+  140 arg_list: arg_list COMMA expression .
+
+    $default  reduce using rule 140 (arg_list)
+
+
+State 246
+
+   96 member_expression: member_expression memop var LBRACKET expression RBRACKET .
+
+    $default  reduce using rule 96 (member_expression)
+
+
+State 247
+
+  109 selection_stmt: IF LPAR expression $@6 if_rpar statement $@7 . else_stmt
+
+    ELSE  shift, and go to state 253
+
+    ELSE      [reduce using rule 150 (empty)]
+    $default  reduce using rule 150 (empty)
+
+    else_stmt  go to state 254
+    if_else    go to state 255
+    empty      go to state 256
+
+
+State 248
+
+  129 for_stmt: RPAR $@16 . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 257
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 249
+
+  127 for_stmt: expression RPAR . $@15 statement
+
+    $default  reduce using rule 126 ($@15)
+
+    $@15  go to state 258
+
+
+State 250
+
+   67 libcall_exp: LIBCALL LPAR expression COMMA expression COMMA expression . RPAR
+
+    RPAR  shift, and go to state 259
+
+
+State 251
+
+   65 libfrd_exp: LIBFRD LPAR expression COMMA expression COMMA expression . RPAR
+
+    RPAR  shift, and go to state 260
+
+
+State 252
+
+   66 libfwt_exp: LIBFWT LPAR expression COMMA expression COMMA expression . RPAR
+
+    RPAR  shift, and go to state 261
+
+
+State 253
+
+  116 if_else: ELSE .
+
+    $default  reduce using rule 116 (if_else)
+
+
+State 254
+
+  109 selection_stmt: IF LPAR expression $@6 if_rpar statement $@7 else_stmt .
+
+    $default  reduce using rule 109 (selection_stmt)
+
+
+State 255
+
+  113 else_stmt: if_else . $@9 statement
+
+    $default  reduce using rule 112 ($@9)
+
+    $@9  go to state 262
+
+
+State 256
+
+  114 else_stmt: empty .
+
+    $default  reduce using rule 114 (else_stmt)
+
+
+State 257
+
+  129 for_stmt: RPAR $@16 statement .
+
+    $default  reduce using rule 129 (for_stmt)
+
+
+State 258
+
+  127 for_stmt: expression RPAR $@15 . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 263
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 259
+
+   67 libcall_exp: LIBCALL LPAR expression COMMA expression COMMA expression RPAR .
+
+    $default  reduce using rule 67 (libcall_exp)
+
+
+State 260
+
+   65 libfrd_exp: LIBFRD LPAR expression COMMA expression COMMA expression RPAR .
+
+    $default  reduce using rule 65 (libfrd_exp)
+
+
+State 261
+
+   66 libfwt_exp: LIBFWT LPAR expression COMMA expression COMMA expression RPAR .
+
+    $default  reduce using rule 66 (libfwt_exp)
+
+
+State 262
+
+  113 else_stmt: if_else $@9 . statement
+
+    IF           shift, and go to state 74
+    SWITCH       shift, and go to state 75
+    CASE         shift, and go to state 76
+    WHILE        shift, and go to state 77
+    FOR          shift, and go to state 78
+    RETURN       shift, and go to state 79
+    BREAK        shift, and go to state 80
+    CLEAR        shift, and go to state 81
+    SLEEP        shift, and go to state 82
+    INPUT        shift, and go to state 83
+    OUTPUTS      shift, and go to state 84
+    OUTPUTC      shift, and go to state 85
+    OUTPUT       shift, and go to state 86
+    PLUS         shift, and go to state 87
+    MINUS        shift, and go to state 88
+    MULTIPLY     shift, and go to state 89
+    EXCLAMATION  shift, and go to state 90
+    AMPERSAND    shift, and go to state 91
+    SEMICOLON    shift, and go to state 92
+    LPAR         shift, and go to state 93
+    LBRACE       shift, and go to state 94
+    ID           shift, and go to state 19
+    OCTNUM       shift, and go to state 34
+    HEXNUM       shift, and go to state 35
+    NUM          shift, and go to state 36
+    CHARCONST    shift, and go to state 37
+    STRINGCONST  shift, and go to state 96
+    LIBCALL      shift, and go to state 97
+    LIBFRD       shift, and go to state 98
+    LIBFWT       shift, and go to state 99
+
+    $default  reduce using rule 119 ($@11)
+
+    var                      go to state 100
+    num                      go to state 101
+    statement                go to state 264
+    compound_stmt            go to state 103
+    expression_stmt          go to state 104
+    expression               go to state 105
+    libfrd_exp               go to state 106
+    libfwt_exp               go to state 107
+    libcall_exp              go to state 108
+    unary_expression_assign  go to state 109
+    logical_expression       go to state 110
+    relational_expression    go to state 111
+    additive_expression      go to state 112
+    term                     go to state 113
+    unary_expression         go to state 114
+    unaop                    go to state 115
+    member_expression        go to state 116
+    factor                   go to state 117
+    selection_stmt           go to state 118
+    case_stmt                go to state 119
+    $@11                     go to state 120
+    iteration_stmt           go to state 121
+    clear_stmt               go to state 122
+    sleep_stmt               go to state 123
+    funcall_stmt             go to state 124
+    call                     go to state 125
+    return_stmt              go to state 126
+    input_stmt               go to state 127
+    output_stmt              go to state 128
+
+
+State 263
+
+  127 for_stmt: expression RPAR $@15 statement .
+
+    $default  reduce using rule 127 (for_stmt)
+
+
+State 264
+
+  113 else_stmt: if_else $@9 statement .
+
+    $default  reduce using rule 113 (else_stmt)

@@ -1,0 +1,135 @@
+
+
+#include "tmlibinclude.h"
+#include <string.h>
+#include <stdio.h>
+
+#define DADDR_SIZE 40960
+extern unsigned char dMem[DADDR_SIZE];
+
+void *libptbl[LIBPTBL_SIZE];
+int libpp = 0;
+unsigned char libDMem[LIBDADDR_SIZE];
+int libdp = 0;
+int libSMem[LIBSADDR_SIZE];
+int libSp = 0;
+unsigned char libTBuf[LIBTBUF_SIZE];
+int libTBuflen = 0;
+FILE *libfdt[LIBFDT_SIZE];
+
+
+
+
+
+
+void lib_init(void){
+  int i;
+  memset(libptbl,0,LIBPTBL_SIZE);
+  for(i=0;i<LIBFDT_SIZE;i++){
+    libfdt[i] = NULL;
+  }
+}
+
+
+int lib_s_push(int prm1,int prm2){
+  if(libSp<LIBSADDR_SIZE){
+    libSMem[libSp] = prm1;
+    libSp++;
+    return 0;
+  }else{
+    return -1;
+  }
+}
+int lib_s_pop(int prm1,int prm2){
+  if(libSp>0){
+    libSp--;
+    return libSMem[libSp];
+  }else{
+    return -1;
+  }
+}
+int lib_s_top(int prm1,int prm2){
+  if(libSp>0){
+    return libSMem[libSp-1];
+  }else{
+    return -1;
+  }
+}
+int lib_s_clear(int prm1,int prm2){
+  libSp = 0;
+  return 0;
+}
+
+
+int dMemStr(char *buf,int mlen,int addr){
+  int i;
+  char ch;
+  for(i=0;i<mlen-1;i++){
+      ch = dMem[addr+i];
+      if(ch) buf[i] = ch;
+      else{
+	buf[i] = 0;
+	break;     
+      } 
+  }
+  return i;
+}
+int lib_fopen(int prm1,int prm2){
+  int i;
+  char fname[MAXSTR];
+  char mode[MAXSTR];
+  FILE *fp;
+ 
+  for(i=0;i<LIBFDT_SIZE&&libfdt[i]!=NULL;i++);
+  if(i>=LIBFDT_SIZE) return -1;
+
+ 
+  dMemStr(fname,MAXSTR,prm1);
+  dMemStr(mode,MAXSTR,prm2);
+  fp = fopen(fname,mode);
+  if(fp == NULL) return -1;
+  libfdt[i] = fp;
+  return i;
+}
+
+int lib_fclose(int prm1,int prm2){
+  if(prm1>=LIBFDT_SIZE || libfdt[prm1] == NULL) return -1;
+  fclose(libfdt[prm1]);
+  libfdt[prm1] = NULL;
+  return 0;
+}
+
+
+
+int libcall_handle(int op,int prm1,int prm2){
+  int ret;
+  char libname[MAXSTR];
+  dMemStr(libname,MAXSTR,op);
+  if(strcmp(libname,"s_push")==0){
+    ret = lib_s_push(prm1,prm2);
+  }else if(strcmp(libname,"s_pop")==0){
+    ret = lib_s_pop(prm1,prm2);
+  }else if(strcmp(libname,"s_top")==0){
+    ret = lib_s_top(prm1,prm2);
+  }else if(strcmp(libname,"s_clear")==0){
+    ret = lib_s_clear(prm1,prm2);
+  }else if(strcmp(libname,"fopen")==0){
+    ret = lib_fopen(prm1,prm2);
+  }else if(strcmp(libname,"fclose")==0){
+    ret = lib_fclose(prm1,prm2);
+  }
+  else{
+    return -1;
+  }
+  return ret;
+}
+
+int libinst_frd(int prm1,int prm2,int prm3){
+  return 0;
+}
+int libinst_fwt(int prm1,int prm2,int prm3){
+  return 0;
+}
+
+
+
